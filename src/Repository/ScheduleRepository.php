@@ -16,6 +16,16 @@ class ScheduleRepository extends ServiceEntityRepository
         parent::__construct($registry, Schedule::class);
     }
 
+    public function countSchedulesPerCourse(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->select('c.name AS courseName, COUNT(s.id) AS scheduleCount')
+            ->join('s.course', 'c')
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Schedule[] Returns an array of Schedule objects
 //     */

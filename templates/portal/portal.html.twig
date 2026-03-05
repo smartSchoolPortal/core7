@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Portal Overview{% endblock %}
+
+{% block body %}
+
+<h1>Smart School Portal</h1>
+
+<hr>
+
+<h2>Courses</h2>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Year Offered</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for course in courses %}
+            <tr>
+                <td>{{ course.name }}</td>
+                <td>{{ course.department }}</td>
+                <td>{{ course.yearOffered }}</td>
+                <td>
+                    <a href="{{ path('course_edit', {id: course.id}) }}">
+                        <button>Edit</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('course_delete', {id: course.id}) }}">
+                        <button style="background:red; color:white;">Delete</button>
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No courses available.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+<a href="{{ path('course_new') }}">
+    <button>Create New Course</button>
+</a>
+
+<br><br>
+
+<h2>Schedule</h2>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Subject</th>
+            <th>Teacher</th>
+            <th>Room</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for schedule in schedules %}
+            <tr>
+                <td>{{ schedule.course.name }}</td>
+                <td>{{ schedule.subject }}</td>
+                <td>{{ schedule.teacher }}</td>
+                <td>{{ schedule.room }}</td>
+                <td>{{ schedule.date|date('d.m.Y') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No schedule entries available.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

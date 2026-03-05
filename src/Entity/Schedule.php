@@ -26,6 +26,10 @@ class Schedule
     #[ORM\Column(length: 100)]
     private ?string $teacher = null;
 
+    #[ORM\ManyToOne(inversedBy: 'schedules')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Course $course = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,4 +78,17 @@ class Schedule
         $this->teacher = $teacher;
         return $this;
     }
+
+    public function getCourse(): ?Course
+    {
+        return $this->course;
+    }
+
+    public function setCourse(?Course $course): static
+    {
+        $this->course = $course;
+
+        return $this;
+    }
 }
+

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Course{% endblock %}
+
+{% block body %}
+
+<h1>Course Details</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.department) }}
+    {{ form_row(form.yearOffered) }}
+
+    <button type="submit">Save</button>
+{{ form_end(form) }}
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Delete Course{% endblock %}
+
+{% block body %}
+
+<h1>Delete Course</h1>
+
+<p>Are you sure you want to delete this course?</p>
+
+<p>
+    <strong>Name:</strong> {{ course.name }} <br>
+    <strong>Department:</strong> {{ course.department }} <br>
+    <strong>Year:</strong> {{ course.yearOffered }}
+</p>
+
+<form method="post" action="{{ path('course_delete', {id: course.id}) }}">
+    <button type="submit" style="color:white; background:red;">
+        Confirm Delete
+    </button>
+</form>
+
+<br>
+
+<a href="{{ path('portal_index') }}">Cancel</a>
+
+{% endblock %}
