@@ -48,6 +48,24 @@ class CourseRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findFiltered(?string $department, ?string $sort): array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        if ($department) {
+            $qb->andWhere('c.department = :dep')
+            ->setParameter('dep', $department);
+        }
+
+        if ($sort === 'year') {
+            $qb->orderBy('c.yearOffered', 'ASC');
+        } else {
+            $qb->orderBy('c.name', 'ASC');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Course[] Returns an array of Course objects
     //     */

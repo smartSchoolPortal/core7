@@ -1,17 +1,42 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}New Course{% endblock %}
-
 {% block body %}
-
-<h1>Create New Course</h1>
-
-{{ form_start(form) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.department) }}
-    {{ form_row(form.yearOffered) }}
-
-    <button type="submit">Save</button>
-{{ form_end(form) }}
-
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Syne:wght@700;800&display=swap');
+  :root{--bg:#080c14;--surface:#0d1220;--border:rgba(99,179,237,0.12);--accent:#38bdf8;--accent2:#818cf8;--text:#e2e8f0;--muted:#64748b;}
+  body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(56,189,248,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,0.03) 1px,transparent 1px);background-size:60px 60px;z-index:0;animation:grid 20s linear infinite;}
+  @keyframes grid{to{transform:translateY(60px)}}
+  .wrap{position:relative;z-index:1;max-width:560px;margin:60px auto;padding:0 24px;animation:up .5s ease both;}
+  @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .eyebrow::before{content:'';width:20px;height:2px;background:var(--accent);border-radius:2px;}
+  h1{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;background:linear-gradient(135deg,#fff 0%,var(--accent) 60%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:32px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;transition:border-color .3s,box-shadow .3s;}
+  .card:hover{border-color:rgba(56,189,248,.25);box-shadow:0 0 40px rgba(56,189,248,.1);}
+  .form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}
+  .form-row label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  .form-row input,.form-row select{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;}
+  .form-row input:focus,.form-row select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(56,189,248,.1);}
+  .actions{display:flex;align-items:center;gap:12px;margin-top:28px;}
+  .btn-primary{background:var(--accent);color:#080c14;padding:10px 24px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .2s;}
+  .btn-primary:hover{background:#7dd3fc;box-shadow:0 4px 24px rgba(56,189,248,.4);transform:translateY(-1px);}
+  .btn-back{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
+  .btn-back:hover{color:var(--accent);}
+</style>
+<div class="wrap">
+  <div class="eyebrow">Courses</div>
+  <h1>Create New Course</h1>
+  <div class="card">
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+      <div class="form-row">{{ form_row(form.name) }}</div>
+      <div class="form-row">{{ form_row(form.department) }}</div>
+      <div class="form-row">{{ form_row(form.yearOffered) }}</div>
+      <div class="actions">
+        <button type="submit" class="btn-primary">✦ Save Course</button>
+        <a href="{{ path('portal_index') }}" class="btn-back">← Back</a>
+      </div>
+    {{ form_end(form) }}
+  </div>
+</div>
 {% endblock %}

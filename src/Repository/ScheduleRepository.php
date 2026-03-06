@@ -19,9 +19,18 @@ class ScheduleRepository extends ServiceEntityRepository
     public function countSchedulesPerCourse(): array
     {
         return $this->createQueryBuilder('s')
-            ->select('c.name AS courseName, COUNT(s.id) AS scheduleCount')
+            ->select('c.name AS name, COUNT(s.id) AS total')
             ->join('s.course', 'c')
             ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countSchedulesPerTeacher()
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s.teacher, COUNT(s.id) as total')
+            ->groupBy('s.teacher')
             ->getQuery()
             ->getResult();
     }

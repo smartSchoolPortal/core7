@@ -1,27 +1,53 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Delete Course{% endblock %}
-
 {% block body %}
-
-<h1>Delete Course</h1>
-
-<p>Are you sure you want to delete this course?</p>
-
-<p>
-    <strong>Name:</strong> {{ course.name }} <br>
-    <strong>Department:</strong> {{ course.department }} <br>
-    <strong>Year:</strong> {{ course.yearOffered }}
-</p>
-
-<form method="post" action="{{ path('course_delete', {id: course.id}) }}">
-    <button type="submit" style="color:white; background:red;">
-        Confirm Delete
-    </button>
-</form>
-
-<br>
-
-<a href="{{ path('portal_index') }}">Cancel</a>
-
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Syne:wght@700;800&display=swap');
+  :root{--bg:#080c14;--surface:#0d1220;--border:rgba(99,179,237,0.12);--accent:#38bdf8;--danger:#f87171;--text:#e2e8f0;--muted:#64748b;}
+  body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(56,189,248,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,0.03) 1px,transparent 1px);background-size:60px 60px;z-index:0;animation:grid 20s linear infinite;}
+  @keyframes grid{to{transform:translateY(60px)}}
+  .wrap{position:relative;z-index:1;max-width:480px;margin:60px auto;padding:0 24px;animation:up .5s ease both;}
+  @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--danger);display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .eyebrow::before{content:'';width:20px;height:2px;background:var(--danger);border-radius:2px;}
+  h1{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#fff;margin-bottom:8px;}
+  .subtitle{font-size:14px;color:var(--muted);margin-bottom:32px;}
+  .card{background:var(--surface);border:1px solid rgba(248,113,113,0.2);border-radius:16px;padding:28px;margin-bottom:24px;}
+  .info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(99,179,237,0.06);}
+  .info-row:last-child{border-bottom:none;}
+  .info-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .info-value{font-size:14px;font-weight:600;color:#fff;}
+  .info-value.year{color:var(--accent);font-family:'Syne',sans-serif;}
+  .actions{display:flex;align-items:center;gap:12px;}
+  .btn-danger{background:rgba(248,113,113,.15);color:var(--danger);border:1px solid rgba(248,113,113,.3);padding:10px 24px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+  .btn-danger:hover{background:rgba(248,113,113,.25);box-shadow:0 4px 24px rgba(248,113,113,.25);transform:translateY(-1px);}
+  .btn-back{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
+  .btn-back:hover{color:var(--accent);}
+</style>
+<div class="wrap">
+  <div class="eyebrow">⚠ Danger Zone</div>
+  <h1>Delete Course</h1>
+  <p class="subtitle">This action cannot be undone. Please confirm below.</p>
+  <div class="card">
+    <div class="info-row">
+      <span class="info-label">Name</span>
+      <span class="info-value">{{ course.name }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Department</span>
+      <span class="info-value">{{ course.department }}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Year</span>
+      <span class="info-value year">{{ course.yearOffered }}</span>
+    </div>
+  </div>
+  <form method="post" action="{{ path('course_delete', {id: course.id}) }}">
+    <div class="actions">
+      <button type="submit" class="btn-danger">✕ Confirm Delete</button>
+      <a href="{{ path('portal_index') }}" class="btn-back">← Cancel</a>
+    </div>
+  </form>
+</div>
 {% endblock %}

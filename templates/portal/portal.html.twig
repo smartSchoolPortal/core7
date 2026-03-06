@@ -1,84 +1,678 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Portal Overview{% endblock %}
-
+{% block title %}Smart School Portal{% endblock %}
 {% block body %}
 
-<h1>Smart School Portal</h1>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap');
 
-<hr>
+  :root {
+    --bg: #080c14;
+    --surface: #0d1220;
+    --surface2: #111827;
+    --border: rgba(99, 179, 237, 0.12);
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --accent3: #34d399;
+    --danger: #f87171;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --glow: 0 0 40px rgba(56, 189, 248, 0.15);
+  }
 
-<h2>Courses</h2>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-<table border="1" cellpadding="8" cellspacing="0">
-    <thead>
-        <tr>
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    animation: gridMove 20s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(56,189,248,0.07) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    animation: floatOrb 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes floatOrb {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(200px, 150px); }
+  }
+
+  .portal-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 32px;
+  }
+
+  /* ── HEADER ── */
+  .portal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 56px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .portal-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .portal-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .portal-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px; height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .portal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, #ffffff 0%, var(--accent) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .portal-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 100px;
+    transition: all 0.3s;
+  }
+
+  .portal-badge:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: var(--glow);
+  }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent3);
+    box-shadow: 0 0 8px var(--accent3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 56px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+  .section:nth-child(5) { animation-delay: 0.4s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title span.icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+
+  .icon-blue { background: rgba(56,189,248,0.15); }
+  .icon-purple { background: rgba(129,140,248,0.15); }
+  .icon-green { background: rgba(52,211,153,0.15); }
+  .icon-orange { background: rgba(251,146,60,0.15); }
+
+  /* ── FILTER FORM ── */
+  .filter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .filter-card:hover {
+    border-color: rgba(56,189,248,0.25);
+    box-shadow: var(--glow);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .form-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .form-input, .form-select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+
+  .form-input:focus, .form-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(56,189,248,0.1);
+  }
+
+  .form-select option {
+    background: var(--surface2);
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #080c14;
+    box-shadow: 0 4px 20px rgba(56,189,248,0.25);
+  }
+
+  .btn-primary:hover {
+    background: #7dd3fc;
+    box-shadow: 0 4px 30px rgba(56,189,248,0.45);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: rgba(129,140,248,0.15);
+    color: var(--accent2);
+    border: 1px solid rgba(129,140,248,0.25);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(129,140,248,0.25);
+    transform: translateY(-1px);
+  }
+
+  .btn-edit {
+    background: rgba(56,189,248,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(56,189,248,0.2);
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+  .btn-edit:hover {
+    background: rgba(56,189,248,0.2);
+    box-shadow: 0 0 12px rgba(56,189,248,0.2);
+  }
+
+  .btn-danger {
+    background: rgba(248,113,113,0.1);
+    color: var(--danger);
+    border: 1px solid rgba(248,113,113,0.2);
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+  .btn-danger:hover {
+    background: rgba(248,113,113,0.2);
+    box-shadow: 0 0 12px rgba(248,113,113,0.2);
+  }
+
+  /* ── TABLES ── */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: rgba(56,189,248,0.05);
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th {
+    padding: 14px 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(99,179,237,0.06);
+    transition: background 0.15s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+
+  tbody tr:hover {
+    background: rgba(56,189,248,0.04);
+  }
+
+  tbody td {
+    padding: 14px 20px;
+    font-size: 14px;
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .td-name {
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .td-dept {
+    color: var(--accent2);
+    font-size: 13px;
+  }
+
+  .td-year {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .td-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .empty-row td {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  /* ── STATS GRID ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .stat-card:hover {
+    border-color: rgba(56,189,248,0.3);
+    transform: translateY(-3px);
+    box-shadow: var(--glow);
+  }
+
+  .stat-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .stat-name {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .stat-count {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ── ACTIVITY LOG ── */
+  .log-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(99,179,237,0.06);
+    transition: background 0.15s;
+  }
+
+  .log-item:last-child { border-bottom: none; }
+  .log-item:hover { background: rgba(56,189,248,0.04); }
+
+  .log-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent3);
+    flex-shrink: 0;
+    box-shadow: 0 0 6px var(--accent3);
+  }
+
+  .log-action {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .log-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── NEW COURSE BTN SECTION ── */
+  .action-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+</style>
+
+<div class="portal-wrapper">
+
+  {# ── HEADER ── #}
+  <header class="portal-header">
+    <div class="portal-header-left">
+      <div class="portal-eyebrow">HTL Sonnenfels</div>
+      <h1 class="portal-title">Smart School Portal</h1>
+    </div>
+    <div class="portal-badge">
+      <span class="status-dot"></span>
+      System Online
+    </div>
+  </header>
+
+  {# ── FILTER ── #}
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="icon icon-blue">🔍</span>
+        Filter & Search
+      </div>
+    </div>
+    <form method="get">
+      <div class="filter-card">
+        <div class="form-group">
+          <label class="form-label">Department</label>
+          <input class="form-input" type="text" name="department" placeholder="e.g. Computer Science">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sort By</label>
+          <select class="form-select" name="sort">
+            <option value="name">Name</option>
+            <option value="year">Year</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          ⚡ Apply Filter
+        </button>
+      </div>
+    </form>
+  </div>
+
+  {# ── COURSES ── #}
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="icon icon-purple">📚</span>
+        Courses
+      </div>
+      <div class="action-bar" style="margin:0">
+        <a href="{{ path('course_new') }}" class="btn btn-secondary">
+          ✦ New Course
+        </a>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
             <th>Name</th>
             <th>Department</th>
             <th>Year Offered</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for course in courses %}
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for course in courses %}
             <tr>
-                <td>{{ course.name }}</td>
-                <td>{{ course.department }}</td>
-                <td>{{ course.yearOffered }}</td>
-                <td>
-                    <a href="{{ path('course_edit', {id: course.id}) }}">
-                        <button>Edit</button>
-                    </a>
-                </td>
-                <td>
-                    <a href="{{ path('course_delete', {id: course.id}) }}">
-                        <button style="background:red; color:white;">Delete</button>
-                    </a>
-                </td>
+              <td class="td-name">{{ course.name }}</td>
+              <td class="td-dept">{{ course.department }}</td>
+              <td class="td-year">{{ course.yearOffered }}</td>
+              <td>
+                <div class="td-actions">
+                  <a href="{{ path('course_edit', {id: course.id}) }}" class="btn btn-edit">✏ Edit</a>
+                  <a href="{{ path('course_delete', {id: course.id}) }}" class="btn btn-danger">✕ Delete</a>
+                </div>
+              </td>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">No courses available.</td>
+          {% else %}
+            <tr class="empty-row">
+              <td colspan="4">No courses available yet.</td>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<br>
-<a href="{{ path('course_new') }}">
-    <button>Create New Course</button>
-</a>
-
-<br><br>
-
-<h2>Schedule</h2>
-
-<table border="1" cellpadding="8" cellspacing="0">
-    <thead>
-        <tr>
+  {# ── SCHEDULE ── #}
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="icon icon-blue">🗓</span>
+        Schedule
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
             <th>Course</th>
             <th>Subject</th>
             <th>Teacher</th>
             <th>Room</th>
             <th>Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for schedule in schedules %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for schedule in schedules %}
             <tr>
-                <td>{{ schedule.course.name }}</td>
-                <td>{{ schedule.subject }}</td>
-                <td>{{ schedule.teacher }}</td>
-                <td>{{ schedule.room }}</td>
-                <td>{{ schedule.date|date('d.m.Y') }}</td>
+              <td class="td-name">{{ schedule.course.name }}</td>
+              <td>{{ schedule.subject }}</td>
+              <td>{{ schedule.teacher }}</td>
+              <td>
+                <span style="background:rgba(56,189,248,0.1);color:var(--accent);padding:3px 10px;border-radius:6px;font-size:13px;font-weight:600;">
+                  {{ schedule.room }}
+                </span>
+              </td>
+              <td class="td-year">{{ schedule.date|date('d.m.Y') }}</td>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">No schedule entries available.</td>
+          {% else %}
+            <tr class="empty-row">
+              <td colspan="5">No schedule entries available.</td>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {# ── STATS ── #}
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="icon icon-green">📊</span>
+        Schedule Statistics
+      </div>
+    </div>
+    <div class="stats-grid">
+      {% for stat in stats %}
+        <div class="stat-card">
+          <div class="stat-name">{{ stat.name }}</div>
+          <div class="stat-count">{{ stat.total }}</div>
+          <div class="stat-label">schedules total</div>
+        </div>
+      {% else %}
+        <p style="color:var(--text-muted);font-size:14px;padding:8px 0;">No statistics available yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# ── ACTIVITY LOG ── #}
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="icon icon-orange">📋</span>
+        Activity Log
+      </div>
+    </div>
+    <div class="table-wrap">
+      {% for log in logs %}
+        <div class="log-item">
+          <span class="log-dot"></span>
+          <span class="log-action">{{ log.action }}</span>
+          <span class="log-date">{{ log.date|date('d.m.Y H:i') }}</span>
+        </div>
+      {% else %}
+        <div class="log-item">
+          <span style="color:var(--text-muted);font-size:14px;margin:auto;padding:16px 0;">No activity yet.</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
 
 {% endblock %}
