@@ -6,13 +6,14 @@ use App\Entity\Schedule;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class AppFixtures extends Fixture
+class ScheduleFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
         $schedules = [
             [
-                'title' => '3AHIT Wochenplan', 'description' => 'Übersicht aller Kurse und Aufgaben für die Klasse 3AHIT'
+                'title' => '3AHIT Wochenplan',
+                'description' => 'Übersicht aller Kurse und Aufgaben für die Klasse 3AHIT'
             ],
             [
                 'title' => 'Informatik Schwerpunktplan',
@@ -31,5 +32,12 @@ class AppFixtures extends Fixture
                 'description' => 'Allgemeine Übersicht über Kurse, Deadlines und Termine'
             ],
         ];
+        foreach ($schedules as $scheduleData) {
+            $schedule = new Schedule();
+            $schedule->setTitle($scheduleData['title']);
+            $schedule->setDescription($scheduleData['description']);
+            $manager->persist($schedule);
+        }
+        $manager->flush();
     }
 }
