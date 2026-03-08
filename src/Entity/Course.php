@@ -6,6 +6,7 @@ use App\Repository\CourseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
 class Course
@@ -16,13 +17,24 @@ class Course
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Please enter a course name.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'The course name cannot be longer than {{ limit }} characters.'
+    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Please enter a department.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'The department cannot be longer than {{ limit }} characters.'
+    )]
     private ?string $department = null;
 
     #[ORM\ManyToOne(inversedBy: 'courses')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'A course must belong to a Schedule.')]
     private ?Schedule $schedule = null;
 
     /**

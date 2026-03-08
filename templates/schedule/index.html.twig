@@ -1,12 +1,49 @@
-<h1>Alle Schedules</h1>
+{% extends 'base.html.twig' %}
 
-<ul>
-    {% for schedule in schedules %}
-        <li>
-            <a href="/schedule/{{ schedule.id }}">
-                {{ schedule.title }}
-            </a>
-            <p>{{ schedule.description }}</p>
-        </li>
-    {% endfor %}
-</ul>
+{% block title %}Smart School Portal{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>Smart School Portal</h1>
+
+        {% for schedule in schedules %}
+            <div>
+                <div>
+                    <h2>{{ schedule.title }}</h2>
+                    <p>{{ schedule.description }}</p>
+                </div>
+
+                <div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Assignments</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for course in schedule.courses %}
+                            <tr>
+                                <td>{{ course.name }}</td>
+                                <td>{{ course.department }}</td>
+                                <td>
+                                    <a href="{{ path('app_course_assignments', {id: course.id}) }}">View Assignments</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>No courses found for this schedule.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <div>
+                No schedules found.
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
