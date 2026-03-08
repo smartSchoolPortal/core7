@@ -28,11 +28,11 @@ class ScheduleFixture extends Fixture
         $rooms = ["A101", "B202", "C303", "D404", "E505"];
 
         $teachers = [
-            "John Miller",
-            "Sarah Brown",
-            "David White",
-            "Laura Green",
-            "Michael Clark"
+            "Wagner",
+            "Weiss",
+            "White",
+            "Nussbaumer",
+            "Javurek"
         ];
 
         for ($i = 0; $i < 5; $i++) {

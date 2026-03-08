@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\CourseRepository;
 use App\Repository\ScheduleRepository;
+use App\Repository\AssignementRepository;
 use App\Repository\ActivityLogRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,8 @@ class PortalController extends AbstractController
         Request $request,
         CourseRepository $courseRepository,
         ScheduleRepository $scheduleRepository,
-        ActivityLogRepository $activityLogRepository
+        ActivityLogRepository $activityLogRepository,
+        AssignementRepository $assignementRepository
     ): Response {
 
         // Filter & Sort Parameter aus URL
@@ -30,6 +32,7 @@ class PortalController extends AbstractController
 
         $courses = $courseRepository->findFiltered($department, $sort);
 
+        $assignments = $assignementRepository->findAll();
         $schedules = $scheduleRepository->findAll();
         $logs = $activityLogRepository->findBy([], ['date' => 'DESC']);
         $stats = $scheduleRepository->countSchedulesPerCourse();
@@ -37,6 +40,7 @@ class PortalController extends AbstractController
         return $this->render('portal/portal.html.twig', [
             'courses' => $courses,
             'schedules' => $schedules,
+            'assignments' => $assignments,
             'stats' => $stats,
             'logs' => $logs
         ]);

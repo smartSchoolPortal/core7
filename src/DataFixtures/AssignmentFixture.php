@@ -2,12 +2,13 @@
 
 namespace App\DataFixtures;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Assignement;
 use App\Entity\Course;
 
-class AssignmentFixture extends Fixture
+class AssignmentFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -50,5 +51,12 @@ class AssignmentFixture extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            CourseFixture::class,
+        ];
     }
 }
