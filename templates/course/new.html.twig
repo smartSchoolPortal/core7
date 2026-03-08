@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Course{% endblock %}
+
+{% block body %}
+
+    <div>
+        <h1>Add Course for "{{ schedule.title }}"</h1>
+        <div>
+            {{ form_start(form) }}
+            <div>
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.name) }}
+            </div>
+
+            <div>
+                {{ form_label(form.department) }}
+                {{ form_widget(form.department, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.department) }}
+            </div>
+
+            <button>
+                Save Course
+            </button>
+
+            <a href="{{ path('app_schedules') }}">Cancel</a>
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+
+{% endblock %}

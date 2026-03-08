@@ -11,8 +11,8 @@
                 <div>
                     <h2>{{ schedule.title }}</h2>
                     <p>{{ schedule.description }}</p>
+                    <a href="{{ path('app_course_new', {id: schedule.id}) }}">Add Course</a>
                 </div>
-
                 <div>
                     <table>
                         <thead>

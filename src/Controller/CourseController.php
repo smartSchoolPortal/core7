@@ -6,7 +6,7 @@ use App\Entity\Course;
 use App\Entity\Schedule;
 use App\Form\CourseType;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Client\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 
