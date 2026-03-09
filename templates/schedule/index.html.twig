@@ -5,7 +5,9 @@
 {% block body %}
     <div>
         <h1>Smart School Portal</h1>
-
+        <div>
+            <a href="{{ path('schedule-statistics') }}">Watch Statistics</a>
+        </div>
         {% for schedule in schedules %}
             <div>
                 <div>

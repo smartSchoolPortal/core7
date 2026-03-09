@@ -22,7 +22,7 @@ class ScheduleRepository extends ServiceEntityRepository
             ->addSelect('COUNT(DISTINCT c.id) AS courseCount')
             ->addSelect('COUNT(a.id) AS assignmentCount')
             ->leftJoin('s.courses', 'c')
-            ->leftJoin('s.assignments', 'a')
+            ->leftJoin('c.assignments', 'a')
             ->groupBy('s.title')
             ->getQuery()
             ->getResult();
