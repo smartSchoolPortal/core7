@@ -3,39 +3,19 @@
 {% block title %}Course Search{% endblock %}
 
 {% block body %}
-    <h1>Search and Filter Courses</h1>
+    <h1>Course Search</h1>
 
     <form method="get">
-        <div>
-            <label for="search">Search by name:</label>
-            <input type="text" id="search" name="search" value="{{ search }}">
-        </div>
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department" value="{{ department }}">
 
-        <div>
-            <label for="department">Department:</label>
-            <input type="text" id="department" name="department" value="{{ department }}">
-        </div>
+        <label for="order">Sort by name:</label>
+        <select id="order" name="order">
+            <option value="ASC" {% if order == 'ASC' %}selected{% endif %}>Ascending</option>
+            <option value="DESC" {% if order == 'DESC' %}selected{% endif %}>Descending</option>
+        </select>
 
-        <div>
-            <label for="sort">Sort by:</label>
-            <select id="sort" name="sort">
-                <option value="name" {% if sort == 'name' %}selected{% endif %}>Name</option>
-                <option value="department" {% if sort == 'department' %}selected{% endif %}>Department</option>
-                <option value="id" {% if sort == 'id' %}selected{% endif %}>ID</option>
-            </select>
-        </div>
-
-        <div>
-            <label for="order">Order:</label>
-            <select id="order" name="order">
-                <option value="ASC" {% if order == 'ASC' %}selected{% endif %}>Ascending</option>
-                <option value="DESC" {% if order == 'DESC' %}selected{% endif %}>Descending</option>
-            </select>
-        </div>
-
-        <div>
-            <button type="submit">Apply Filters</button>
-        </div>
+        <button type="submit">Apply</button>
     </form>
 
     <hr>
@@ -69,23 +49,16 @@
         {% if page > 1 %}
             <a href="{{ path('app_course_search', {
                 page: page - 1,
-                search: search,
                 department: department,
-                sort: sort,
                 order: order
-            }) }}">
-                Previous
-            </a>
+            }) }}">Previous</a>
         {% endif %}
 
         <a href="{{ path('app_course_search', {
             page: page + 1,
-            search: search,
             department: department,
-            sort: sort,
             order: order
-        }) }}">
-            Next
-        </a>
+        }) }}">Next</a>
     </div>
+    <a href="{{ path('app_schedules') }}">Back to main page</a>
 {% endblock %}

@@ -43,8 +43,6 @@ class CourseRepository extends ServiceEntityRepository
 
     public function findFilteredSortedPaginated(
         ?string $department = null,
-        ?string $search = null,
-        string $sortBy = 'name',
         string $order = 'ASC',
         int $page = 1,
         int $limit = 5
@@ -56,19 +54,9 @@ class CourseRepository extends ServiceEntityRepository
                 ->setParameter('department', $department);
         }
 
-        if ($search) {
-            $qb->andWhere('c.name LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
-        }
-
-        $allowedSortFields = ['name', 'department', 'id'];
-        if (!in_array($sortBy, $allowedSortFields, true)) {
-            $sortBy = 'name';
-        }
-
         $order = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
 
-        $qb->orderBy('c.' . $sortBy, $order)
+        $qb->orderBy('c.name', $order)
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit);
 

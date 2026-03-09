@@ -14,15 +14,11 @@ class filterAndSort extends AbstractController
     public function search(Request $request, CourseRepository $courseRepository): Response
     {
         $department = $request->query->get('department');
-        $search = $request->query->get('search');
-        $sortBy = $request->query->get('sort', 'name');
         $order = $request->query->get('order', 'ASC');
         $page = max(1, (int) $request->query->get('page', 1));
 
         $courses = $courseRepository->findFilteredSortedPaginated(
             $department,
-            $search,
-            $sortBy,
             $order,
             $page,
             5
@@ -31,8 +27,6 @@ class filterAndSort extends AbstractController
         return $this->render('course/search.html.twig', [
             'courses' => $courses,
             'department' => $department,
-            'search' => $search,
-            'sort' => $sortBy,
             'order' => $order,
             'page' => $page,
         ]);
