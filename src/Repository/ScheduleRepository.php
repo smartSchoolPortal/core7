@@ -16,6 +16,31 @@ class ScheduleRepository extends ServiceEntityRepository
         parent::__construct($registry, Schedule::class);
     }
 
+    public function getScheduleStatistics() : array{
+        return $this->createQueryBuilder('s')
+            ->select('s.title AS scheduleTitle')
+            ->addSelect('COUNT(DISTINCT c.id) AS courseCount')
+            ->addSelect('COUNT(a.id) AS assignmentCount')
+            ->leftJoin('s.courses', 'c')
+            ->leftJoin('s.assignments', 'a')
+            ->groupBy('s.title')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllWithCourseAndAssignments() : array
+    {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.courses', 'c')
+            ->addSelect('c')
+            ->leftJoin('c.assignments', 'a')
+            ->addSelect('a')
+            ->orderBy('s.id', 'ASC')
+            ->addOrderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+    }
     //    /**
     //     * @return Schedule[] Returns an array of Schedule objects
     //     */

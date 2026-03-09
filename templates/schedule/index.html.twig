@@ -30,6 +30,14 @@
                                 <td>
                                     <a href="{{ path('app_course_assignments', {id: course.id}) }}">View Assignments</a>
                                 </td>
+                                <td>
+                                    <a href="{{ path('app_course_edit', {id: course.id}) }}">Edit</a>
+                                </td>
+                                <td>
+                                    <form method="POST" action="{{ path('app_course_delete', {id: course.id}) }}" onsubmit="return confirm('Are you sure you want to delete this course?')">
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         {% else %}
                             <tr>
