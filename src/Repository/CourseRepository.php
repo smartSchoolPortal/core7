@@ -26,7 +26,7 @@ class CourseRepository extends ServiceEntityRepository
     }
 
     public function findAllSortedName() : array{
-        return this->createQueryBuilder('c')
+        return $this->createQueryBuilder('c')
             ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();
@@ -39,6 +39,40 @@ class CourseRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findFilteredSortedPaginated(
+        ?string $department = null,
+        ?string $search = null,
+        string $sortBy = 'name',
+        string $order = 'ASC',
+        int $page = 1,
+        int $limit = 5
+    ): array {
+        $qb = $this->createQueryBuilder('c');
+
+        if ($department) {
+            $qb->andWhere('c.department = :department')
+                ->setParameter('department', $department);
+        }
+
+        if ($search) {
+            $qb->andWhere('c.name LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        $allowedSortFields = ['name', 'department', 'id'];
+        if (!in_array($sortBy, $allowedSortFields, true)) {
+            $sortBy = 'name';
+        }
+
+        $order = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
+
+        $qb->orderBy('c.' . $sortBy, $order)
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
     }
     //    /**
     //     * @return Course[] Returns an array of Course objects

@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\ActivityLog;
 use App\Entity\Course;
 use App\Entity\Schedule;
 use App\Form\CourseType;
+use App\Repository\ActivityLogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CourseController extends AbstractController{
     #[Route('/schedule/{id}/course/new', name: 'app_course_new')]
-    public function new(Schedule $schedule, Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Schedule $schedule, Request $request, EntityManagerInterface $entityManager, ActivityLogRepository $activityLogRepository): Response
     {
         $course = new Course();
         $course->setSchedule($schedule);
