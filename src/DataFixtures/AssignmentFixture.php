@@ -10,7 +10,7 @@ use App\Entity\Course;
 
 class AssignmentFixture extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $manager): void //Doctrines Werkzeug zum Daten s/l/a.. Entitys
     {
         $courses = $manager->getRepository(Course::class)->findAll();
 

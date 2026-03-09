@@ -20,6 +20,7 @@ class Course
     #[ORM\Column]
     private ?int $id = null;
 
+    //Validation Constraints
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3, max: 100)]
@@ -111,7 +112,6 @@ class Course
     public function removeAssignment(Assignement $assignment): static
     {
         if ($this->assignments->removeElement($assignment)) {
-            // set the owning side to null (unless already changed)
             if ($assignment->getCourse() === $this) {
                 $assignment->setCourse(null);
             }
@@ -141,7 +141,6 @@ class Course
     public function removeSchedule(Schedule $schedule): static
     {
         if ($this->schedules->removeElement($schedule)) {
-            // set the owning side to null (unless already changed)
             if ($schedule->getCourse() === $this) {
                 $schedule->setCourse(null);
             }

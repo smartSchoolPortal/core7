@@ -29,12 +29,11 @@ class PortalController extends AbstractController
         // Filter & Sort Parameter aus URL
         $department = $request->query->get('department');
         $sort = $request->query->get('sort');
-
         $courses = $courseRepository->findFiltered($department, $sort);
 
         $assignments = $assignementRepository->findAll();
         $schedules = $scheduleRepository->findAll();
-        $logs = $activityLogRepository->findBy([], ['date' => 'DESC']);
+        $logs = $activityLogRepository->findBy([], ['date' => 'DESC']); //(kein Filter, Sortierung)
         $stats = $scheduleRepository->countSchedulesPerCourse();
 
         return $this->render('portal/portal.html.twig', [
@@ -55,7 +54,7 @@ class PortalController extends AbstractController
         $course = new Course();
 
         $form = $this->createForm(CourseType::class, $course);
-        $form->handleRequest($request);
+        $form->handleRequest($request); //http request lesen und Daten in $course schreiben
 
         if ($form->isSubmitted() && $form->isValid()) {
 

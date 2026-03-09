@@ -11,7 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AssignementRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry) //Zugriff auf die Datenbankverwaltung Doctrine
     {
         parent::__construct($registry, Assignement::class);
     }

@@ -18,7 +18,7 @@ class CourseType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver): void //konf manager für Form
     {
         $resolver->setDefaults([
             'data_class' => Course::class,
