@@ -23,6 +23,10 @@ class CourseController extends AbstractController{
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            $log = new ActivityLog();
+            $log->setAction("Created new course ".$course->getName());
+            $log->setDate(new \DateTime());
+            $entityManager->persist($log);
             $entityManager->persist($course);
             $entityManager->flush();
 
@@ -40,6 +44,11 @@ class CourseController extends AbstractController{
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            $log = new ActivityLog();
+            $log->setAction("Edited course ".$course->getName());
+            $log->setDate(new \DateTime());
+            $entityManager->persist($log);
+
             $entityManager->flush();
             return $this->redirectToRoute('app_schedules');
         }
@@ -51,6 +60,10 @@ class CourseController extends AbstractController{
 
     #[Route('/course/{id}/delete', name: 'app_course_delete')]
 public function delete(Course $course, Request $request, EntityManagerInterface $entityManager): Response {
+        $log = new ActivityLog();
+        $log->setAction("Deleted course ".$course->getName());
+        $log->setDate(new \DateTime());
+        $entityManager->persist($log);
         $entityManager->remove($course);
         $entityManager->flush();
 

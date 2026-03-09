@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Repository\ActivityLogRepository;
 use App\Repository\CourseRepository;
 use App\Repository\ScheduleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -9,11 +10,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ScheduleController extends AbstractController {
     #[Route('/portal', name: 'app_schedules')]
-    public function index(ScheduleRepository $scheduleRepository): Response
+    public function index(ScheduleRepository $scheduleRepository, ActivityLogRepository $activityLogRepository): Response
     {
+        $logs = $activityLogRepository->findBy([], ['date' => 'DESC']);
         $schedules = $scheduleRepository->findAll();
         return $this->render('schedule/index.html.twig', [
             'schedules' => $schedules,
+            'logs' => $logs,
         ]);
     }
 

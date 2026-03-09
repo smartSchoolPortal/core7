@@ -59,4 +59,11 @@
             </div>
         {% endfor %}
     </div>
+    <div>
+        <h1>Activity Logs</h1>
+        {% for log in logs %}
+            <p>{{ log.action }}</p>
+            <p>{{ log.date|date('d.m.Y H:i') }}</p>
+        {% endfor %}
+    </div>
 {% endblock %}
