@@ -48,7 +48,6 @@ class CourseController extends AbstractController{
             $log->setAction("Edited course ".$course->getName());
             $log->setDate(new \DateTime());
             $entityManager->persist($log);
-
             $entityManager->flush();
             return $this->redirectToRoute('app_schedules');
         }

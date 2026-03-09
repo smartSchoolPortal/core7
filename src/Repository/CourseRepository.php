@@ -16,31 +16,6 @@ class CourseRepository extends ServiceEntityRepository
         parent::__construct($registry, Course::class);
     }
 
-    public function findByDepartment(string $department): array{
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.department = :department')
-            ->setParameter('department', $department)
-            ->orderBy('c.id', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findAllSortedName() : array{
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.name', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findPaginated(int $page = 1, int $limit = 5): array{
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.name', 'ASC')
-            ->setFirstResult(($page-1)*$limit)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
-
     public function findFilteredSortedPaginated(
         ?string $department = null,
         string $order = 'ASC',
@@ -54,7 +29,7 @@ class CourseRepository extends ServiceEntityRepository
                 ->setParameter('department', $department);
         }
 
-        $order = strtoupper($order) === 'DESC' ? 'DESC' : 'ASC';
+        $order = $order === 'DESC' ? 'DESC' : 'ASC';
 
         $qb->orderBy('c.name', $order)
             ->setFirstResult(($page - 1) * $limit)

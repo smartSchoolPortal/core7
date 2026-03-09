@@ -27,20 +27,6 @@ class ScheduleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    public function findAllWithCourseAndAssignments() : array
-    {
-        return $this->createQueryBuilder('s')
-            ->leftJoin('s.courses', 'c')
-            ->addSelect('c')
-            ->leftJoin('c.assignments', 'a')
-            ->addSelect('a')
-            ->orderBy('s.id', 'ASC')
-            ->addOrderBy('c.id', 'ASC')
-            ->getQuery()
-            ->getResult();
-
-    }
     //    /**
     //     * @return Schedule[] Returns an array of Schedule objects
     //     */

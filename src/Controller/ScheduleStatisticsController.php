@@ -11,11 +11,8 @@ class ScheduleStatisticsController extends AbstractController
 {
     #[Route('/statistics', name: 'schedule-statistics')]
     public function statistics(ScheduleRepository $scheduleRepository) : Response{
-        $schedules = $scheduleRepository->findAllWithCourseAndAssignments();
         $stats = $scheduleRepository->getScheduleStatistics();
-
         return $this->render('schedule/statistics.html.twig', [
-            'schedules' => $schedules,
             'stats' => $stats,
         ]);
     }
